@@ -1,0 +1,11 @@
+# Developer-only material. Keep runtime/user-facing files in the package.
+.github/
+docs/
+tools/
+native/*.cpp
+native/build_native.ps1
+native/build_native.bat
+build_native.bat
+pyproject.toml.example
+CONTRIBUTING.md
+SECURITY.md

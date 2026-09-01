@@ -1,0 +1,22 @@
+# Copy this file to pyproject.toml only when you are ready to publish to the Comfy Registry.
+# Fill in the repository URL and PublisherId first.
+
+[project]
+name = "dlss5-nr"
+description = "Unofficial experimental DLSS 5 Neural Rendering post-processing nodes for ComfyUI"
+version = "0.2.0"
+license = { file = "LICENSE" }
+dependencies = ["numpy"]
+requires-python = ">=3.10"
+classifiers = [
+    "Operating System :: Microsoft :: Windows",
+    "Environment :: GPU :: NVIDIA CUDA",
+]
+
+[project.urls]
+Repository = "https://github.com/YOUR_GITHUB_USERNAME/ComfyUI-DLSS5-NR"
+"Bug Tracker" = "https://github.com/YOUR_GITHUB_USERNAME/ComfyUI-DLSS5-NR/issues"
+
+[tool.comfy]
+PublisherId = "YOUR_PUBLISHER_ID"
+DisplayName = "DLSS 5 Neural Rendering (Unofficial)"

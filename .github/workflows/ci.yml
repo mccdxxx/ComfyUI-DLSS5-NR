@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python-and-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile Python sources
+        run: python -m py_compile __init__.py nodes.py tools/check_no_proprietary_binaries.py
+      - name: Ensure NVIDIA proprietary runtimes are not committed
+        run: python tools/check_no_proprietary_binaries.py
+
+  native-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build native bridge and caller helper
+        shell: pwsh
+        run: ./native/build_native.ps1
+      - name: Verify outputs
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'native/bin/dlss5nr_bridge.dll')) { throw 'bridge missing' }
+          if (-not (Test-Path 'runtime/caller/nvngx.dll_comfy.dll')) { throw 'caller helper missing' }
+      - name: Upload CI native artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-native-ci
+          path: |
+            native/bin/dlss5nr_bridge.dll
+            runtime/caller/nvngx.dll_comfy.dll

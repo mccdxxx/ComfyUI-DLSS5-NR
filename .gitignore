@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Native build outputs
+native/bin/*
+!native/bin/.gitkeep
+runtime/caller/*
+!runtime/caller/.gitkeep
+*.obj
+*.exp
+*.lib
+*.pdb
+
+# NVIDIA proprietary runtimes - never commit
+runtime/_nvngx.dll
+runtime/nvngx*.dll
+_nvngx.dll
+nvngx*.dll
+
+# Release output
+dist/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
