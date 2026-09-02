@@ -20,7 +20,7 @@ _lib = None
 _initialized_gpu = None
 _dll_directory_handles = []
 
-__version__ = "0.2.0"
+__version__ = "0.3.0-alpha2"
 
 
 class DLSS5NRError(RuntimeError):
@@ -77,6 +77,7 @@ def _load_library():
         ctypes.c_float, # skin
         ctypes.c_int,   # automask
         ctypes.c_int,   # reset
+        ctypes.c_int,   # temporal mode (NVOF motion vectors)
         ctypes.c_char_p,
         ctypes.c_int,
     ]
@@ -90,6 +91,13 @@ def _load_library():
 
     lib.dlss5nr_gpu_name.argtypes = []
     lib.dlss5nr_gpu_name.restype = ctypes.c_char_p
+
+    lib.dlss5nr_nvof_available.argtypes = []
+    lib.dlss5nr_nvof_available.restype = ctypes.c_int
+    lib.dlss5nr_nvof_grid.argtypes = []
+    lib.dlss5nr_nvof_grid.restype = ctypes.c_int
+    lib.dlss5nr_nvof_perf.argtypes = []
+    lib.dlss5nr_nvof_perf.restype = ctypes.c_int
 
     _lib = lib
     return lib
@@ -147,7 +155,7 @@ class DLSS5NeuralRendering:
                 "structure": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.05}),
                 "skin": ("FLOAT", {"default": -1.0, "min": -1.0, "max": 2.0, "step": 0.05}),
                 "auto_mask": ("BOOLEAN", {"default": False}),
-                "batch_mode": (["still images", "temporal sequence"], {"default": "still images"}),
+                "batch_mode": (["still images", "temporal"], {"default": "still images"}),
                 "gpu_index": ("INT", {"default": 0, "min": 0, "max": 15, "step": 1}),
                 # Keep new widgets appended after existing ones so saved ComfyUI
                 # workflows from v0.1.8 preserve positional widget values.
@@ -161,7 +169,8 @@ class DLSS5NeuralRendering:
     CATEGORY = "experimental/DLSS 5 NR"
     DESCRIPTION = (
         "Unofficial experimental in-process DLSS 5 Neural Rendering (NGX feature 18). "
-        "No external executable and no image files are written. Current build uses a CPU staging path."
+        "Temporal mode keeps DLSS history and supplies NVIDIA Optical Flow motion vectors; "
+        "the first frame uses explicit zero motion vectors. Current build uses a CPU staging path."
     )
 
     def process(
@@ -184,9 +193,10 @@ class DLSS5NeuralRendering:
             raise DLSS5NRError("DLSS5 NR requires at least RGB input.")
 
         style_i = _style_to_int(style)
-        is_sequence = batch_mode == "temporal sequence"
+        is_sequence = batch_mode == "temporal"
 
-        # v0.1 intentionally uses CPU staging. This keeps the first native bridge
+        # v0.3.0-alpha2 still uses CPU staging. Temporal motion estimation itself
+        # runs through NVIDIA's hardware Optical Flow engine on a private D3D11 device.
         # simple and robust while still remaining fully in-process.
         src = image[..., :3].detach().to(device="cpu", dtype=torch.float32).contiguous().numpy()
         out = np.empty_like(src, dtype=np.float32)
@@ -211,6 +221,7 @@ class DLSS5NeuralRendering:
                     ctypes.c_float(float(skin)),
                     1 if auto_mask else 0,
                     int(reset),
+                    1 if is_sequence else 0,
                     err, len(err),
                 )
                 if not ok:
@@ -274,6 +285,9 @@ class DLSS5NRRuntimeInfo:
             version_s = version.decode("utf-8", errors="replace") if version else "unknown"
             gpu = lib.dlss5nr_gpu_name()
             gpu_s = gpu.decode("utf-8", errors="replace") if gpu else "unknown"
+            nvof_available = bool(lib.dlss5nr_nvof_available())
+            nvof_grid = int(lib.dlss5nr_nvof_grid())
+            nvof_perf = int(lib.dlss5nr_nvof_perf())
 
         nr_dll = _RUNTIME / "nvngx_dlssnr.dll"
         nr_info = "missing"
@@ -286,6 +300,8 @@ class DLSS5NRRuntimeInfo:
             f"Bridge: {version_s}\n"
             f"GPU: {gpu_s}\n"
             f"GPU index: {gpu_index}\n"
+            f"NVIDIA Optical Flow API: {'available' if nvof_available else 'NOT FOUND'}\n"
+            f"Temporal motion: NVOFA grid {nvof_grid}, perf {nvof_perf} (FAST); first frame = zero MV\n"
             f"Runtime dir: {_RUNTIME}\n"
             f"nvngx_dlssnr.dll: {nr_info}",
         )

@@ -9,6 +9,7 @@ FORBIDDEN = {
     "_nvngx.dll",
     "nvngx_dlssnr.dll",
     "nvngx_dlss.dll",
+    "nvofapi64.dll",
 }
 
 bad = []

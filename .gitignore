@@ -15,8 +15,10 @@ runtime/caller/*
 # NVIDIA proprietary runtimes - never commit
 runtime/_nvngx.dll
 runtime/nvngx*.dll
+nvofapi64.dll
 _nvngx.dll
 nvngx*.dll
+nvofapi64.dll
 
 # Release output
 dist/

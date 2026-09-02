@@ -5,6 +5,7 @@ $nr = Join-Path $runtime 'nvngx_dlssnr.dll'
 $core = Join-Path $runtime '_nvngx.dll'
 $shimNew = Join-Path $runtime 'caller\nvngx.dll_comfy.dll'
 $shimOld = Join-Path $runtime 'caller\nvngx.dll'
+$nvof = Join-Path $env:SystemRoot 'System32\nvofapi64.dll'
 
 function Show-Dll([string]$label, [string]$path) {
     Write-Host ""
@@ -22,10 +23,11 @@ function Show-Dll([string]$label, [string]$path) {
     } catch {}
 }
 
-Write-Host '[DLSS5-NR] Runtime diagnostics v0.2.0'
+Write-Host '[DLSS5-NR] Runtime diagnostics v0.3.0-alpha2'
 Show-Dll 'NGX core local override (optional)' $core
 Show-Dll 'DLSS NR user-supplied runtime' $nr
 if (Test-Path $shimNew) { Show-Dll 'Project caller helper' $shimNew } else { Show-Dll 'Project caller helper (legacy)' $shimOld }
+Show-Dll 'NVIDIA Optical Flow driver API (temporal mode)' $nvof
 
 Write-Host ""
 Write-Host 'Note: absence of runtime\_nvngx.dll is normal; the bridge can discover NGX core from the NVIDIA DriverStore.'

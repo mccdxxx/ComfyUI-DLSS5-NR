@@ -3,6 +3,7 @@
 docs/
 tools/
 native/*.cpp
+native/*.h
 native/build_native.ps1
 native/build_native.bat
 build_native.bat

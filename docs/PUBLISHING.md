@@ -20,23 +20,23 @@ The workflow `.github/workflows/ci.yml` runs on Windows and validates:
 
 Before the first release, ensure the CI job is green.
 
-## 3. Create the first release
+## 3. Create a release
 
 Update versions if needed, commit, then tag:
 
 ```bash
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.3.0-alpha2
+git push origin v0.3.0-alpha2
 ```
 
 `.github/workflows/release.yml` will build on `windows-latest` and create:
 
 ```text
-ComfyUI-DLSS5-NR-v0.2.0-windows-x64.zip
-ComfyUI-DLSS5-NR-v0.2.0-windows-x64.zip.sha256
+ComfyUI-DLSS5-NR-v0.3.0-alpha2-windows-x64.zip
+ComfyUI-DLSS5-NR-v0.3.0-alpha2-windows-x64.zip.sha256
 ```
 
-The ZIP contains the project-owned prebuilt native bridge and caller helper, so end users do not need Visual Studio.
+The ZIP contains the project-owned prebuilt native bridge and caller helper, so end users do not need Visual Studio. Versions containing a hyphen (for example `0.3.0-alpha2`) are automatically published as GitHub prereleases.
 
 ## 4. What must never be in the release
 

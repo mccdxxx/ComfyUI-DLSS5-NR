@@ -57,4 +57,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create '${{ github.ref_name }}' dist/*.zip dist/*.sha256 --generate-notes --title '${{ github.ref_name }}'
+          $tag = '${{ github.ref_name }}'
+          $version = $tag.Substring(1)
+          if ($version.Contains('-')) {
+            gh release create $tag dist/*.zip dist/*.sha256 --generate-notes --title $tag --prerelease
+          } else {
+            gh release create $tag dist/*.zip dist/*.sha256 --generate-notes --title $tag
+          }

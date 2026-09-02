@@ -11,7 +11,7 @@ $Native = $PSScriptRoot
 $Bin = Join-Path $Native 'bin'
 $CallerOut = Join-Path $Root 'runtime\caller'
 
-Write-Host "[DLSS5-NR] PowerShell native builder v0.2.0"
+Write-Host "[DLSS5-NR] PowerShell native builder v0.3.0-alpha2"
 Write-Host "[DLSS5-NR] No Developer Command Prompt is required."
 
 $pf86 = [Environment]::GetFolderPath('ProgramFilesX86')
@@ -68,14 +68,15 @@ if (-not (Test-Path $sdkIncludeRoot)) { Fail "Windows SDK Include directory not 
 $sdkVersions = Get-ChildItem -Path $sdkIncludeRoot -Directory -ErrorAction SilentlyContinue |
     Where-Object {
         (Test-Path (Join-Path $_.FullName 'um\windows.h')) -and
-        (Test-Path (Join-Path $sdkLibRoot ($_.Name + '\um\x64\d3d12.lib')))
+        (Test-Path (Join-Path $sdkLibRoot ($_.Name + '\um\x64\d3d12.lib'))) -and
+        (Test-Path (Join-Path $sdkLibRoot ($_.Name + '\um\x64\d3d11.lib')))
     } |
     Sort-Object {
         try { [version]$_.Name } catch { [version]'0.0' }
     } -Descending
 
 if (-not $sdkVersions -or $sdkVersions.Count -eq 0) {
-    Fail 'A usable Windows SDK with windows.h and d3d12.lib was not found.'
+    Fail 'A usable Windows SDK with windows.h, d3d12.lib and d3d11.lib was not found.'
 }
 $sdkVersion = $sdkVersions[0].Name
 $sdkIncBase = Join-Path $sdkIncludeRoot $sdkVersion
@@ -125,8 +126,9 @@ $callerDll = Join-Path $CallerOut 'nvngx.dll_comfy.dll'
 Run-Cl ($common + @('/Od', $callerCpp, '/link', ('/OUT:' + $callerDll)) + ($libDirs | ForEach-Object { '/LIBPATH:' + $_ })) '[1/2] Building caller shim...'
 
 $bridgeCpp = Join-Path $Native 'dlss5nr_bridge.cpp'
+$nvofCpp = Join-Path $Native 'nvof_flow.cpp'
 $bridgeDll = Join-Path $Bin 'dlss5nr_bridge.dll'
-Run-Cl ($common + @('/O2', $bridgeCpp, '/link', ('/OUT:' + $bridgeDll), 'd3d12.lib', 'dxgi.lib', 'ole32.lib') + ($libDirs | ForEach-Object { '/LIBPATH:' + $_ })) '[2/2] Building in-process ComfyUI bridge...'
+Run-Cl ($common + @('/O2', $bridgeCpp, $nvofCpp, '/link', ('/OUT:' + $bridgeDll), 'd3d12.lib', 'd3d11.lib', 'dxgi.lib', 'ole32.lib') + ($libDirs | ForEach-Object { '/LIBPATH:' + $_ })) '[2/2] Building in-process ComfyUI bridge + NVIDIA Optical Flow...'
 
 # Remove intermediary build products created next to the invocation working directory / source.
 Get-ChildItem -Path $Root -Filter '*.obj' -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue

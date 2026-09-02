@@ -18,7 +18,8 @@ Keep these out of git history and GitHub release assets unless you have explicit
 - `_nvngx.dll`;
 - `nvngx_dlssnr.dll`;
 - other NVIDIA `nvngx_*` runtime binaries;
-- NVIDIA NGX/DLSS SDK headers.
+- `nvofapi64.dll`;
+- NVIDIA NGX/DLSS/Optical Flow SDK headers.
 
 CI includes a filename check to reduce accidental bundling.
 
@@ -45,3 +46,9 @@ The repository should describe the feature as **unofficial/experimental**, avoid
 2. Require users to supply their own compatible NVIDIA runtime.
 3. Start with GitHub Releases, clearly marked experimental.
 4. Obtain independent legal review before commercial distribution or broader registry publication if the project becomes significant.
+
+## NVIDIA Optical Flow
+
+Temporal mode loads the NVIDIA display driver's `nvofapi64.dll` dynamically. The project must not bundle a copied driver DLL in source or release assets. The implementation keeps its own minimal declarations and does not vendor NVIDIA Optical Flow headers.
+
+The D3D11 function-table details and measured flow conversion were informed by the MIT-licensed `NIGos/dlss5-bridge`; preserve its notice in `THIRD_PARTY_NOTICES.md` when redistributing this project.

@@ -4,7 +4,7 @@
 [project]
 name = "dlss5-nr"
 description = "Unofficial experimental DLSS 5 Neural Rendering post-processing nodes for ComfyUI"
-version = "0.2.0"
+version = "0.3.0-alpha2"
 license = { file = "LICENSE" }
 dependencies = ["numpy"]
 requires-python = ">=3.10"
@@ -14,8 +14,8 @@ classifiers = [
 ]
 
 [project.urls]
-Repository = "https://github.com/YOUR_GITHUB_USERNAME/ComfyUI-DLSS5-NR"
-"Bug Tracker" = "https://github.com/YOUR_GITHUB_USERNAME/ComfyUI-DLSS5-NR/issues"
+Repository = "https://github.com/lisitskyaa/ComfyUI-DLSS5-NR"
+"Bug Tracker" = "https://github.com/lisitskyaa/ComfyUI-DLSS5-NR/issues"
 
 [tool.comfy]
 PublisherId = "YOUR_PUBLISHER_ID"

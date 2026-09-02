@@ -40,7 +40,7 @@ Copy-Item $bridge (Join-Path $Stage 'native\bin\dlss5nr_bridge.dll') -Force
 Copy-Item $shim (Join-Path $Stage 'runtime\caller\nvngx.dll_comfy.dll') -Force
 
 # Safety gate: release assets must not contain NVIDIA proprietary runtimes.
-$forbidden = @('_nvngx.dll', 'nvngx_dlssnr.dll', 'nvngx_dlss.dll')
+$forbidden = @('_nvngx.dll', 'nvngx_dlssnr.dll', 'nvngx_dlss.dll', 'nvofapi64.dll')
 foreach ($name in $forbidden) {
     $found = Get-ChildItem -Path $Stage -Filter $name -File -Recurse -ErrorAction SilentlyContinue
     if ($found) { throw "Refusing to package forbidden NVIDIA runtime: $($found.FullName)" }

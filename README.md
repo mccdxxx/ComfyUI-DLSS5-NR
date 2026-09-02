@@ -5,7 +5,7 @@
 The node runs Neural Rendering **in-process** inside ComfyUI through a small native D3D12 bridge. It does not launch a helper executable and it does not write temporary image files.
 
 > [!WARNING]
-> This project targets an undocumented / pre-release interface and is not affiliated with, endorsed by, or supported by NVIDIA or Comfy Org. Runtime behavior may change with NVIDIA driver or `nvngx_dlssnr.dll` versions. Native driver/runtime failures can crash the ComfyUI process.
+> This project targets an undocumented / pre-release Neural Rendering interface and is not affiliated with, endorsed by, or supported by NVIDIA or Comfy Org. Runtime behavior may change with NVIDIA driver or `nvngx_dlssnr.dll` versions. Native driver/runtime failures can crash the ComfyUI process.
 
 ## What it does
 
@@ -18,7 +18,7 @@ ComfyUI IMAGE
     -> ComfyUI IMAGE
 ```
 
-Current v0.2.0 uses CPU staging for the ComfyUI tensor transfer:
+Current v0.3.0-alpha2 still uses CPU staging for the ComfyUI tensor transfer:
 
 ```text
 Torch IMAGE -> CPU float32 -> D3D12 RGBA16F -> DLSS NR -> CPU float32 -> Torch IMAGE
@@ -26,15 +26,59 @@ Torch IMAGE -> CPU float32 -> D3D12 RGBA16F -> DLSS NR -> CPU float32 -> Torch I
 
 There is no subprocess or disk round-trip. CUDA/D3D12 interop is planned as a later optimization.
 
+## Temporal mode: NVIDIA Optical Flow
+
+v0.3.0-alpha2 promotes the explicit motion-vector path tested in alpha1 and adds per-frame motion estimation through the **NVIDIA Optical Flow Accelerator (NVOFA)**.
+
+Only two batch modes remain:
+
+```text
+still images
+    Reset=1 for every image
+    no temporal history
+    no motion-vector resource
+
+temporal
+    frame 0: Reset=1 + explicit zero R16G16_FLOAT MV
+    frame 1+: Reset=0 + NVIDIA Optical Flow MV from raw previous/current input frames
+```
+
+Temporal flow is estimated from the **raw input frames**, never from the DLSS-processed output:
+
+```text
+previous raw frame ----\
+                        > NVIDIA Optical Flow -> current-to-previous MV -> DLSSNR.MVec
+current raw frame -----/                                      |
+                                                              + DLSS temporal history
+```
+
+Implementation details in this alpha:
+
+- private D3D11 device on the same NVIDIA DXGI adapter used by the D3D12/NGX bridge;
+- driver-provided `nvofapi64.dll` (no separate model/download);
+- NVOFA output grid: **2x2**;
+- NVOFA performance level: **FAST**;
+- input to NVOFA: 8-bit luma in `B8G8R8A8_UNORM`;
+- native NVOFA flow: coarse `R16G16_SINT`, S10.5 fixed-point (1/32 pixel);
+- conversion to full-resolution `R16G16_FLOAT` using nearest-cell reconstruction;
+- the DLSSNR MV texture stores normalized UV motion and uses `MVecScale=(width,height)`;
+- NVOFA is called with current frame as input and previous frame as reference, producing the current-to-previous reprojection direction used by the temporal contract;
+- NVOFA temporal hints are disabled in this alpha so each frame pair is deterministic and a new ComfyUI batch can reset cleanly.
+
+The first frame has no previous frame, so the explicit zero-MV path proven in alpha1 remains the correct bootstrap.
+
 ## Requirements
 
 - Windows 10/11 x64
 - NVIDIA RTX GPU
 - Recent NVIDIA display driver
+- NVIDIA Optical Flow driver API (`nvofapi64.dll`) for `temporal` mode
 - A **compatible, legally obtained** `nvngx_dlssnr.dll`
 - ComfyUI with Python, PyTorch and NumPy
 
-GPU support is determined by the specific Neural Rendering runtime you provide. Stock/pre-release builds may support only particular GPU generations. A `0xBAD00001` result means the runtime rejected the feature on the current GPU/runtime/driver combination.
+NVIDIA Optical Flow hardware is available on Turing-generation NVIDIA GPUs and newer; all GeForce RTX generations satisfy that hardware-generation requirement. GPU support for Neural Rendering itself is still determined by the specific `nvngx_dlssnr.dll` you provide.
+
+A `0xBAD00001` result means the Neural Rendering runtime rejected the feature on the current GPU/runtime/driver combination.
 
 ## Installation — normal users
 
@@ -72,9 +116,15 @@ Do not normally copy `_nvngx.dll` yourself. The bridge attempts, in order:
 
 1. `runtime/_nvngx.dll` as an explicit local override;
 2. normal Windows DLL search;
-3. automatic discovery in the active NVIDIA DriverStore packages matching `nv*.inf_*`.
+3. automatic discovery in NVIDIA DriverStore packages matching `nv*.inf_*`.
 
 The project does not redistribute `_nvngx.dll`.
+
+### `nvofapi64.dll`
+
+Do not download or bundle `nvofapi64.dll`. It is supplied by the NVIDIA display driver and is loaded from the normal Windows driver installation when `batch_mode = temporal`.
+
+`still images` does not initialize NVOFA.
 
 ## Developer build
 
@@ -100,6 +150,8 @@ native/bin/dlss5nr_bridge.dll
 runtime/caller/nvngx.dll_comfy.dll
 ```
 
+The bridge now links the standard Windows `d3d11.lib` in addition to D3D12/DXGI. `nvofapi64.dll` is loaded dynamically at runtime and is not linked or redistributed.
+
 ## Node parameters
 
 | Parameter | Purpose |
@@ -111,8 +163,8 @@ runtime/caller/nvngx.dll_comfy.dll
 | `structure` | Local structure / micro-detail strength (`DLSSNR.LocalStructureStrength`). |
 | `skin` | Skin-specific structure strength. `-1` leaves the runtime's default behavior. |
 | `auto_mask` | Enables the runtime's automatic mask path. |
-| `batch_mode` | `still images` resets temporal state for every image; `temporal sequence` keeps state after the first frame. |
-| `gpu_index` | NVIDIA DXGI adapter index. |
+| `batch_mode` | `still images` processes independent frames; `temporal` keeps history and supplies zero/NVIDIA Optical Flow motion vectors. |
+| `gpu_index` | NVIDIA DXGI adapter index. The private NVOFA D3D11 device is created on the same adapter. |
 | `channel_order` | `auto`, `RGBA`, or `BGRA`; useful because different runtime builds have exposed different R/B ordering. |
 
 Output resolution is identical to input resolution. This node is Neural Rendering/post-processing, not DLSS Super Resolution.
@@ -124,6 +176,8 @@ Output resolution is identical to input resolution. This node is Neural Renderin
 - plugin version;
 - native bridge version;
 - selected GPU name/index;
+- whether the NVIDIA Optical Flow D3D11 API is visible;
+- temporal NVOFA grid/performance settings;
 - runtime directory;
 - size and SHA-256 of the supplied `nvngx_dlssnr.dll`.
 
@@ -157,9 +211,19 @@ Get-ChildItem "$env:SystemRoot\System32\DriverStore\FileRepository" -Filter _nvn
 
 A matching driver copy can be placed at `runtime/_nvngx.dll` as a local override. Do **not** rename `nvngx_dlss.dll`; it is a different component.
 
+### `NVIDIA Optical Flow: could not load nvofapi64.dll`
+
+This only affects `temporal` mode. Verify that a recent NVIDIA display driver is installed. Run `diagnose_runtime.bat`; it reports the driver copy under `%SystemRoot%\System32` when present.
+
+Do not download `nvofapi64.dll` from third-party DLL sites.
+
+### `NVIDIA Optical Flow: nvOFInit / nvOFExecute failed`
+
+Attach the complete ComfyUI exception and `DLSS 5 NR Runtime Info` output to an issue. The native bridge includes the driver's own NVOF last-error text when available.
+
 ### `CreateFeature(18) failed: 0xBAD00001`
 
-Feature not supported by the supplied runtime on the selected GPU/driver combination. Use a runtime that legitimately supports your configuration.
+Feature not supported by the supplied Neural Rendering runtime on the selected GPU/driver combination. Use a runtime that legitimately supports your configuration.
 
 ### `0xBAD00002`
 
@@ -169,12 +233,21 @@ The observed Neural Rendering snippet rejected the caller. The release includes 
 
 Try `channel_order = RGBA` or `BGRA`. `auto` compares both interpretations against the source and normally selects the plausible one.
 
+### Old workflow says `batch_mode` is invalid
+
+alpha2 intentionally removes the experimental `temporal sequence` / `temporal sequence (legacy no MV)` choices. Delete and re-add the node, or change the saved widget to one of the two current values:
+
+```text
+still images
+temporal
+```
+
 ## GitHub Releases
 
 Tags matching `v*` trigger the Windows release workflow. GitHub Actions:
 
 1. checks that NVIDIA proprietary DLLs were not committed;
-2. builds the native bridge and caller helper on `windows-latest`;
+2. builds the native bridge, NVIDIA Optical Flow integration and caller helper on `windows-latest`;
 3. assembles a clean user ZIP with the prebuilt project-owned DLLs;
 4. writes a SHA-256 checksum;
 5. creates the GitHub Release.
@@ -183,13 +256,18 @@ See [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
 
 ## References / implementation notes
 
-The integration uses observed behavior of NVIDIA NGX/Neural Rendering interfaces and public NGX API naming. Useful references include:
+Useful references include:
 
 - NVIDIA DLSS / NGX public repository: https://github.com/NVIDIA/DLSS
-- Zonnery's experimental DLSS 5 NR player/reference: https://github.com/Zonnery/dlss5-nr-player
+- NVIDIA Optical Flow SDK public repository: https://github.com/NVIDIA/NVIDIAOpticalFlowSDK
+- NVIDIA Optical Flow programming guide: https://docs.nvidia.com/video-technologies/optical-flow-sdk/nvofa-programming-guide/index.html
+- Zonnery experimental DLSS 5 NR player/reference: https://github.com/Zonnery/dlss5-nr-player
+- NIGos DLSS5 bridge: https://github.com/NIGos/dlss5-bridge
 - NVIDIA RTX nodes for ComfyUI: https://github.com/Comfy-Org/Nvidia_RTX_Nodes_ComfyUI
 
-No NVIDIA SDK headers or NVIDIA runtime DLLs are vendored in this repository.
+The NVOF D3D11 function-table integration and measured flow-direction/normalization behavior were informed by the MIT-licensed NIGos `dlss5-bridge`; attribution is retained in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
+No NVIDIA runtime DLLs or NVIDIA SDK headers are vendored in this repository.
 
 ## Legal / licensing
 
@@ -199,11 +277,12 @@ This project does not redistribute:
 
 - `_nvngx.dll`
 - `nvngx_dlssnr.dll`
-- other `nvngx_*` NVIDIA runtime binaries
-- NVIDIA NGX SDK headers
+- `nvofapi64.dll`
+- other NVIDIA runtime binaries
+- NVIDIA NGX/Optical Flow SDK headers
 
-The integration uses undocumented behavior, including a thin caller-forwarding helper and observed project/application identifiers. Before distributing or using this project, review the terms that apply to the NVIDIA software/runtime you use. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`docs/LEGAL_NOTES.md`](docs/LEGAL_NOTES.md).
+The integration uses undocumented/pre-release Neural Rendering behavior, including a thin caller-forwarding helper and observed project/application identifiers. Before distributing or using this project, review the terms that apply to the NVIDIA software/runtime you use. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`docs/LEGAL_NOTES.md`](docs/LEGAL_NOTES.md).
 
 ## Status
 
-v0.2.0 is intended as an **experimental GitHub release**, not an official NVIDIA integration. GitHub publication is the recommended first step; Comfy Registry / Manager publication should wait until the licensing/redistribution position and binary-scanning requirements have been reviewed.
+v0.3.0-alpha2 is an **experimental prerelease** that makes the alpha1 explicit-MV path the normal temporal implementation and adds NVIDIA Optical Flow for real frame-to-frame motion. It is not an official NVIDIA integration. Validate temporal output on real video before promoting this build to a stable release.
