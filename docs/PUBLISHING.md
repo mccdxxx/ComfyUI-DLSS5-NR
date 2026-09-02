@@ -25,18 +25,18 @@ Before the first release, ensure the CI job is green.
 Update versions if needed, commit, then tag:
 
 ```bash
-git tag v0.3.0-alpha2
-git push origin v0.3.0-alpha2
+git tag v0.3.0
+git push origin v0.3.0
 ```
 
 `.github/workflows/release.yml` will build on `windows-latest` and create:
 
 ```text
-ComfyUI-DLSS5-NR-v0.3.0-alpha2-windows-x64.zip
-ComfyUI-DLSS5-NR-v0.3.0-alpha2-windows-x64.zip.sha256
+ComfyUI-DLSS5-NR-v0.3.0-windows-x64.zip
+ComfyUI-DLSS5-NR-v0.3.0-windows-x64.zip.sha256
 ```
 
-The ZIP contains the project-owned prebuilt native bridge and caller helper, so end users do not need Visual Studio. Versions containing a hyphen (for example `0.3.0-alpha2`) are automatically published as GitHub prereleases.
+The ZIP contains the project-owned prebuilt native bridge and caller helper, so end users do not need Visual Studio. Versions containing a hyphen (for example `0.3.1-alpha1`) are automatically published as GitHub prereleases; `v0.3.0` is published as a normal release.
 
 ## 4. What must never be in the release
 
@@ -46,6 +46,7 @@ The release packaging script fails if it sees any of:
 _nvngx.dll
 nvngx_dlssnr.dll
 nvngx_dlss.dll
+nvofapi64.dll
 ```
 
 Users provide `runtime/nvngx_dlssnr.dll` themselves. `_nvngx.dll` is discovered from the installed NVIDIA driver when possible.

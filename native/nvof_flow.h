@@ -45,6 +45,6 @@ void NvofShutdown();
 // Lightweight driver check used by Runtime Info. Does not create an OFA session.
 bool NvofDriverApiAvailable();
 
-// Fixed settings used by this alpha.
+// Fixed settings used by this release.
 uint32_t NvofGridSize();
 uint32_t NvofPerfLevel();

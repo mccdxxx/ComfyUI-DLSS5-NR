@@ -4,7 +4,7 @@
 [project]
 name = "dlss5-nr"
 description = "Unofficial experimental DLSS 5 Neural Rendering post-processing nodes for ComfyUI"
-version = "0.3.0-alpha2"
+version = "0.3.0"
 license = { file = "LICENSE" }
 dependencies = ["numpy"]
 requires-python = ">=3.10"

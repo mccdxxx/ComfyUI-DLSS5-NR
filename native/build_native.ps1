@@ -11,7 +11,7 @@ $Native = $PSScriptRoot
 $Bin = Join-Path $Native 'bin'
 $CallerOut = Join-Path $Root 'runtime\caller'
 
-Write-Host "[DLSS5-NR] PowerShell native builder v0.3.0-alpha2"
+Write-Host "[DLSS5-NR] PowerShell native builder v0.3.0"
 Write-Host "[DLSS5-NR] No Developer Command Prompt is required."
 
 $pf86 = [Environment]::GetFolderPath('ProgramFilesX86')

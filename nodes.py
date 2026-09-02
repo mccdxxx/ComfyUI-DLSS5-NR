@@ -10,6 +10,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import comfy.utils
 
 _ROOT = Path(__file__).resolve().parent
 _BRIDGE = _ROOT / "native" / "bin" / "dlss5nr_bridge.dll"
@@ -20,7 +21,7 @@ _lib = None
 _initialized_gpu = None
 _dll_directory_handles = []
 
-__version__ = "0.3.0-alpha2"
+__version__ = "0.3.0"
 
 
 class DLSS5NRError(RuntimeError):
@@ -195,15 +196,18 @@ class DLSS5NeuralRendering:
         style_i = _style_to_int(style)
         is_sequence = batch_mode == "temporal"
 
-        # v0.3.0-alpha2 still uses CPU staging. Temporal motion estimation itself
+        # v0.3.0 still uses CPU staging. Temporal motion estimation itself
         # runs through NVIDIA's hardware Optical Flow engine on a private D3D11 device.
         # simple and robust while still remaining fully in-process.
         src = image[..., :3].detach().to(device="cpu", dtype=torch.float32).contiguous().numpy()
         out = np.empty_like(src, dtype=np.float32)
 
+        total_frames = int(src.shape[0])
+        pbar = comfy.utils.ProgressBar(total_frames)
+
         with _lock:
             lib = _ensure_initialized(int(gpu_index))
-            for i in range(src.shape[0]):
+            for i in range(total_frames):
                 frame_in = np.ascontiguousarray(src[i], dtype=np.float32)
                 frame_out = np.empty_like(frame_in, dtype=np.float32)
                 h, w, _ = frame_in.shape
@@ -254,6 +258,7 @@ class DLSS5NeuralRendering:
                     corrected = raw if raw_score <= swp_score else swapped
 
                 out[i] = corrected
+                pbar.update_absolute(i + 1, total_frames)
 
         # Return to the same device/dtype convention ComfyUI supplied.
         result = torch.from_numpy(out).to(device=image.device, dtype=image.dtype)

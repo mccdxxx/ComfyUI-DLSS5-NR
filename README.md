@@ -18,7 +18,7 @@ ComfyUI IMAGE
     -> ComfyUI IMAGE
 ```
 
-Current v0.3.0-alpha2 still uses CPU staging for the ComfyUI tensor transfer:
+Current v0.3.0 still uses CPU staging for the ComfyUI tensor transfer:
 
 ```text
 Torch IMAGE -> CPU float32 -> D3D12 RGBA16F -> DLSS NR -> CPU float32 -> Torch IMAGE
@@ -26,9 +26,11 @@ Torch IMAGE -> CPU float32 -> D3D12 RGBA16F -> DLSS NR -> CPU float32 -> Torch I
 
 There is no subprocess or disk round-trip. CUDA/D3D12 interop is planned as a later optimization.
 
+ComfyUI receives **frame-by-frame progress updates** while an IMAGE batch is processed.
+
 ## Temporal mode: NVIDIA Optical Flow
 
-v0.3.0-alpha2 promotes the explicit motion-vector path tested in alpha1 and adds per-frame motion estimation through the **NVIDIA Optical Flow Accelerator (NVOFA)**.
+v0.3.0 uses an explicit motion-vector temporal path and adds per-frame motion estimation through the **NVIDIA Optical Flow Accelerator (NVOFA)**.
 
 Only two batch modes remain:
 
@@ -52,7 +54,7 @@ current raw frame -----/                                      |
                                                               + DLSS temporal history
 ```
 
-Implementation details in this alpha:
+Implementation details in v0.3.0:
 
 - private D3D11 device on the same NVIDIA DXGI adapter used by the D3D12/NGX bridge;
 - driver-provided `nvofapi64.dll` (no separate model/download);
@@ -63,9 +65,9 @@ Implementation details in this alpha:
 - conversion to full-resolution `R16G16_FLOAT` using nearest-cell reconstruction;
 - the DLSSNR MV texture stores normalized UV motion and uses `MVecScale=(width,height)`;
 - NVOFA is called with current frame as input and previous frame as reference, producing the current-to-previous reprojection direction used by the temporal contract;
-- NVOFA temporal hints are disabled in this alpha so each frame pair is deterministic and a new ComfyUI batch can reset cleanly.
+- NVOFA temporal hints are disabled in v0.3.0 so each frame pair is deterministic and a new ComfyUI batch can reset cleanly.
 
-The first frame has no previous frame, so the explicit zero-MV path proven in alpha1 remains the correct bootstrap.
+The first frame has no previous frame, so temporal mode bootstraps it with an explicit zero-MV field.
 
 ## Requirements
 
@@ -109,6 +111,8 @@ runtime/caller/nvngx.dll_comfy.dll
 ```
 
 **Visual Studio / MSVC is not required for normal installation.**
+
+The prebuilt Windows release ZIP intentionally contains only the files needed to run the node. Developer tools, native source code, workflows and extended documentation remain in the repository and GitHub source archives.
 
 ### `_nvngx.dll`
 
@@ -235,7 +239,7 @@ Try `channel_order = RGBA` or `BGRA`. `auto` compares both interpretations again
 
 ### Old workflow says `batch_mode` is invalid
 
-alpha2 intentionally removes the experimental `temporal sequence` / `temporal sequence (legacy no MV)` choices. Delete and re-add the node, or change the saved widget to one of the two current values:
+v0.3.0 uses only `still images` and `temporal`; the older `temporal sequence` / `temporal sequence (legacy no MV)` values are no longer valid. Delete and re-add the node, or change the saved widget to one of the two current values:
 
 ```text
 still images
@@ -285,4 +289,4 @@ The integration uses undocumented/pre-release Neural Rendering behavior, includi
 
 ## Status
 
-v0.3.0-alpha2 is an **experimental prerelease** that makes the alpha1 explicit-MV path the normal temporal implementation and adds NVIDIA Optical Flow for real frame-to-frame motion. It is not an official NVIDIA integration. Validate temporal output on real video before promoting this build to a stable release.
+v0.3.0 is the first stable project release with the explicit motion-vector temporal path and NVIDIA Optical Flow for real frame-to-frame motion. The integration remains unofficial and experimental with respect to the NVIDIA Neural Rendering interface.

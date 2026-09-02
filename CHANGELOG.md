@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-09-02
+
+- Promoted the tested NVIDIA Optical Flow temporal implementation from `0.3.0-alpha2` to the stable project release.
+- Added native ComfyUI frame progress reporting for IMAGE batches.
+- Stable release exposes only two batch modes: `still images` and `temporal`.
+- `temporal` uses explicit zero motion vectors on frame 0 and NVIDIA Optical Flow current-to-previous vectors on later frames.
+- Updated runtime/build/documentation version labels to `0.3.0`.
+
 ## 0.3.0-alpha2 - 2026-09-02
 
 - Promoted the explicit motion-vector temporal path validated in alpha1.

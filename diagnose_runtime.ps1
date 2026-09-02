@@ -23,7 +23,7 @@ function Show-Dll([string]$label, [string]$path) {
     } catch {}
 }
 
-Write-Host '[DLSS5-NR] Runtime diagnostics v0.3.0-alpha2'
+Write-Host '[DLSS5-NR] Runtime diagnostics v0.3.0'
 Show-Dll 'NGX core local override (optional)' $core
 Show-Dll 'DLSS NR user-supplied runtime' $nr
 if (Test-Path $shimNew) { Show-Dll 'Project caller helper' $shimNew } else { Show-Dll 'Project caller helper (legacy)' $shimOld }
